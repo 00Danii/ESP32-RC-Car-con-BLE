@@ -10,37 +10,50 @@ void MyServerCallbacks::onDisconnect(BLEServer *pServer)
 {
   deviceConnected = false;
   Serial.println("Dispositivo desconectado");
+  // volver a publicar advertising
+  BLEDevice::startAdvertising();
 }
 
 void MyCallbacks::onWrite(BLECharacteristic *pCharacteristic)
 {
-  std::string rxValue = pCharacteristic->getValue();
+  std::string rx = pCharacteristic->getValue();
+  if (rx.length() == 0)
+    return;
+  char cmd = rx[0];
+  Serial.printf("Comando: %c\n", cmd);
 
-  if (rxValue.length() > 0)
+  uint8_t speed = 200; // valor PWM 0-255 por defecto
+
+  switch (cmd)
   {
-    char cmd = rxValue[0];
-    Serial.printf("Comando recibido: %c\n", cmd);
-
-    switch (cmd)
-    {
-    case 'F':
-      Serial.println("➡ AVANZAR");
-      break;
-    case 'B':
-      Serial.println("⬅ RETROCEDER");
-      break;
-    case 'L':
-      Serial.println("⬅ IZQUIERDA");
-      break;
-    case 'R':
-      Serial.println("➡ DERECHA");
-      break;
-    case 'S':
-      Serial.println("⏹ STOP");
-      break;
-    default:
-      Serial.println("? Comando desconocido");
-      break;
-    }
+  case 'F':
+    moveForward(speed);
+    break;
+  case 'B':
+    moveBackward(speed);
+    break;
+  case 'L':
+    turnLeft(speed);
+    break;
+  case 'R':
+    turnRight(speed);
+    break;
+  case 'S':
+    stopMotors();
+    break;
+  case 'H':
+    horn(1000, 300);
+    break;  // claxon 1kHz 300ms
+  case '1': // toggle relé trasero
+    relayRearState = !relayRearState;
+    digitalWrite(RELAY_REAR_PIN, relayRearState ? HIGH : LOW);
+    break;
+  case '2': // toggle luces
+    lightsState = !lightsState;
+    digitalWrite(LIGHTS_PIN, lightsState ? HIGH : LOW);
+    break;
+  default:
+    Serial.println("Comando desconocido");
+    break;
   }
 }
