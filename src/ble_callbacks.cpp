@@ -1,4 +1,6 @@
 #include "ble_callbacks.h"
+#include "motor_control.h"
+#include <cctype>
 
 void MyServerCallbacks::onConnect(BLEServer *pServer)
 {
@@ -19,24 +21,49 @@ void MyCallbacks::onWrite(BLECharacteristic *pCharacteristic)
   std::string rx = pCharacteristic->getValue();
   if (rx.length() == 0)
     return;
-  char cmd = rx[0];
-  Serial.printf("Comando: %c\n", cmd);
 
-  uint8_t speed = 200; // valor PWM 0-255 por defecto
+  uint8_t speed = 200;           // valor PWM 0-255 por defecto
+  const int STEERING_DELTA = 30; // ajuste para FR/FL
+
+  // Comandos compuestos: "FR" (forward + right) y "FL" (forward + left)
+  if ((rx == "FR") || (rx == "fr"))
+  {
+    int angle = constrain(90 + STEERING_DELTA, 0, 180);
+    setSteeringAngle(angle);
+    moveForward(speed);
+    Serial.println("Comando: FR -> girar derecha y avanzar");
+    return;
+  }
+  if ((rx == "FL") || (rx == "fl"))
+  {
+    int angle = constrain(90 - STEERING_DELTA, 0, 180);
+    setSteeringAngle(angle);
+    moveForward(speed);
+    Serial.println("Comando: FL -> girar izquierda y avanzar");
+    return;
+  }
+
+  // Comando simple (un carácter)
+  char cmd = toupper((unsigned char)rx[0]);
+  Serial.printf("Comando: %c\n", cmd);
 
   switch (cmd)
   {
   case 'F':
+    // volver servos a posición central antes de avanzar
+    setSteeringAngle(90);
     moveForward(speed);
     break;
   case 'B':
+    // volver servos a posición central antes de retroceder
+    setSteeringAngle(90);
     moveBackward(speed);
     break;
   case 'L':
-    turnLeft(speed);
+    turnLeft(speed); // ahora solo mueve servos
     break;
   case 'R':
-    turnRight(speed);
+    turnRight(speed); // ahora solo mueve servos
     break;
   case 'S':
     stopMotors();
