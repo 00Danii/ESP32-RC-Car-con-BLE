@@ -46,11 +46,16 @@ void MyCallbacks::onWrite(BLECharacteristic *pCharacteristic)
     break;  // claxon 1kHz 300ms
   case '1': // toggle relé trasero
     relayRearState = !relayRearState;
-    digitalWrite(RELAY_REAR_PIN, relayRearState ? HIGH : LOW);
+    // Escribir nivel según si el relé es active LOW o active HIGH
+    digitalWrite(RELAY_REAR_PIN,
+                 relayRearState ? (RELAY_ACTIVE_LOW ? LOW : HIGH)
+                                : (RELAY_ACTIVE_LOW ? HIGH : LOW));
     break;
   case '2': // toggle luces
     lightsState = !lightsState;
-    digitalWrite(LIGHTS_PIN, lightsState ? HIGH : LOW);
+    digitalWrite(LIGHTS_PIN,
+                 lightsState ? (LIGHTS_ACTIVE_LOW ? LOW : HIGH)
+                             : (LIGHTS_ACTIVE_LOW ? HIGH : LOW));
     break;
   default:
     Serial.println("Comando desconocido");

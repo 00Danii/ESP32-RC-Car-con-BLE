@@ -23,6 +23,12 @@ const int RELAY_REAR_PIN = 15;  // relé motor trasero
 const int LIGHTS_PIN = 2;       // luces delanteras
 const int BUZZER_PIN = 4;       // buzzer/claxon
 
+// Indica si el relé se activa con nivel LOW (true) o HIGH (false)
+const bool RELAY_ACTIVE_LOW = true;
+
+// Indica si las luces se activan con nivel LOW (true) o HIGH (false)
+const bool LIGHTS_ACTIVE_LOW = false;
+
 // ====== LEDC / PWM config ======
 const int PWM_FREQ_MOTORS = 20000; // 20 kHz para motores
 const int PWM_RES_MOTORS = 8;      // 8 bits (0-255)

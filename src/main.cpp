@@ -26,7 +26,9 @@ void setup()
   pinMode(LIGHTS_PIN, OUTPUT);
   pinMode(BUZZER_PIN, OUTPUT);
 
-  digitalWrite(RELAY_REAR_PIN, LOW);
+  // asegurar estado inicial: relé APAGADO al arrancar (considerar active-low)
+  relayRearState = false;
+  digitalWrite(RELAY_REAR_PIN, RELAY_ACTIVE_LOW ? HIGH : LOW); // HIGH apaga si active-low
   digitalWrite(LIGHTS_PIN, LOW);
 
   // Configurar ledc para motores

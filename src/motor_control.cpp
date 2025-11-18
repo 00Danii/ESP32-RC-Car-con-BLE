@@ -29,19 +29,28 @@ void moveBackward(uint8_t speed)
   setMotorPins(M2_IN1, M2_IN2, false, speed, PWM_CH_MOTOR_B);
 }
 
-void turnLeft(uint8_t speed)
+// helper: mover ambos servos al mismo ángulo
+void setSteeringAngle(int angle)
 {
-  Serial.println("Girar izquierda");
-  // idea simple: motor izquierdo más lento / reversa
-  setMotorPins(M1_IN1, M1_IN2, false, speed / 2, PWM_CH_MOTOR_A); // reversa suave
-  setMotorPins(M2_IN1, M2_IN2, true, speed, PWM_CH_MOTOR_B);      // adelante
+  angle = constrain(angle, 0, 180);
+  setServoAngle(SERVO_LEFT_PIN, PWM_CH_SERVO_L, angle);
+  setServoAngle(SERVO_RIGHT_PIN, PWM_CH_SERVO_R, angle);
 }
 
-void turnRight(uint8_t speed)
+void turnLeft(uint8_t /*speed*/)
 {
-  Serial.println("Girar derecha");
-  setMotorPins(M1_IN1, M1_IN2, true, speed, PWM_CH_MOTOR_A);
-  setMotorPins(M2_IN1, M2_IN2, false, speed / 2, PWM_CH_MOTOR_B);
+  Serial.println("Girar izquierda (solo servos)");
+  const int STEERING_DELTA = 30; // ajusta según necesidad
+  int angle = constrain(90 - STEERING_DELTA, 0, 180);
+  setSteeringAngle(angle);
+}
+
+void turnRight(uint8_t /*speed*/)
+{
+  Serial.println("Girar derecha (solo servos)");
+  const int STEERING_DELTA = 30; // ajusta según necesidad
+  int angle = constrain(90 + STEERING_DELTA, 0, 180);
+  setSteeringAngle(angle);
 }
 
 void stopMotors()
