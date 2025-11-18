@@ -12,5 +12,7 @@ void turnRight(uint8_t speed);
 void stopMotors();
 void setServoAngle(int pin, int channel, int angle);
 void horn(uint16_t freq, uint16_t durationMs);
+// Mover ambos servos al mismo ángulo (usado por BLE)
+void setSteeringAngle(int angle);
 
 #endif
