@@ -10,6 +10,18 @@ bool lightsState = false;
 
 void setup()
 {
+  // Inicializar pines críticos lo antes posible para evitar estados indeseados
+  pinMode(RELAY_REAR_PIN, OUTPUT);
+  pinMode(LIGHTS_PIN, OUTPUT);
+
+  // asegurar estado inicial: RELAY apagado al arrancar (considerar active-low)
+  relayRearState = false;
+  digitalWrite(RELAY_REAR_PIN, RELAY_ACTIVE_LOW ? HIGH : LOW); // HIGH apaga si active-low
+
+  // asegurar luces apagadas al inicio según lógica active-low/active-high
+
+  digitalWrite(LIGHTS_PIN, LIGHTS_ACTIVE_LOW ? HIGH : LOW);
+
   Serial.begin(115200);
   delay(1000);
   Serial.println("ESP32 RC - BLE inicializando...");
@@ -22,14 +34,7 @@ void setup()
   pinMode(ENA_PIN, OUTPUT);
   pinMode(ENB_PIN, OUTPUT);
 
-  pinMode(RELAY_REAR_PIN, OUTPUT);
-  pinMode(LIGHTS_PIN, OUTPUT);
   pinMode(BUZZER_PIN, OUTPUT);
-
-  // asegurar estado inicial: relé APAGADO al arrancar (considerar active-low)
-  relayRearState = false;
-  digitalWrite(RELAY_REAR_PIN, RELAY_ACTIVE_LOW ? HIGH : LOW); // HIGH apaga si active-low
-  digitalWrite(LIGHTS_PIN, LOW);
 
   // Configurar ledc para motores
   ledcSetup(PWM_CH_MOTOR_A, PWM_FREQ_MOTORS, PWM_RES_MOTORS);
