@@ -23,9 +23,11 @@ void MyCallbacks::onWrite(BLECharacteristic *pCharacteristic)
     return;
 
   uint8_t speed = 200;           // valor PWM 0-255 por defecto
-  const int STEERING_DELTA = 30; // ajuste para FR/FL
+  const int STEERING_DELTA = 30; // ajuste para FR/FL/BR/BL
 
-  // Comandos compuestos: "FR" (forward + right) y "FL" (forward + left)
+  // Comandos compuestos:
+  // "FR" (forward + right), "FL" (forward + left)
+  // "BR" (backward + right), "BL" (backward + left)
   if ((rx == "FR") || (rx == "fr"))
   {
     int angle = constrain(90 + STEERING_DELTA, 0, 180);
@@ -40,6 +42,22 @@ void MyCallbacks::onWrite(BLECharacteristic *pCharacteristic)
     setSteeringAngle(angle);
     moveForward(speed);
     Serial.println("Comando: FL -> girar izquierda y avanzar");
+    return;
+  }
+  if ((rx == "BR") || (rx == "br"))
+  {
+    int angle = constrain(90 + STEERING_DELTA, 0, 180);
+    setSteeringAngle(angle);
+    moveBackward(speed);
+    Serial.println("Comando: BR -> girar derecha y retroceder");
+    return;
+  }
+  if ((rx == "BL") || (rx == "bl"))
+  {
+    int angle = constrain(90 - STEERING_DELTA, 0, 180);
+    setSteeringAngle(angle);
+    moveBackward(speed);
+    Serial.println("Comando: BL -> girar izquierda y retroceder");
     return;
   }
 
