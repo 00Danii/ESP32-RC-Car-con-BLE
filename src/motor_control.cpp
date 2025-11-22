@@ -34,7 +34,7 @@ void setSteeringAngle(int angle)
 {
   angle = constrain(angle, 0, 180);
   setServoAngle(SERVO_LEFT_PIN, PWM_CH_SERVO_L, angle);
-  setServoAngle(SERVO_RIGHT_PIN, PWM_CH_SERVO_R, angle);
+  setServoAngle(SERVO_RIGHT_PIN, PWM_CH_SERVO_R, angle-10);
 }
 
 void turnLeft(uint8_t /*speed*/)
