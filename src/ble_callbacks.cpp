@@ -87,8 +87,8 @@ void MyCallbacks::onWrite(BLECharacteristic *pCharacteristic)
     stopMotors();
     break;
   case 'H':
-    horn(1000, 300);
-    break;  // claxon 1kHz 300ms
+    horn(1000, 100);
+    break;  // claxon 1kHz 100ms
   case '1': // toggle relé trasero
     relayRearState = !relayRearState;
     // Escribir nivel según si el relé es active LOW o active HIGH
