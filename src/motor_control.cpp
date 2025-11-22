@@ -40,7 +40,7 @@ void setSteeringAngle(int angle)
 void turnLeft(uint8_t /*speed*/)
 {
   Serial.println("Girar izquierda (solo servos)");
-  const int STEERING_DELTA = 30; // ajusta según necesidad
+  const int STEERING_DELTA = 45; // ajusta según necesidad
   int angle = constrain(90 - STEERING_DELTA, 0, 180);
   setSteeringAngle(angle);
 }
@@ -48,7 +48,7 @@ void turnLeft(uint8_t /*speed*/)
 void turnRight(uint8_t /*speed*/)
 {
   Serial.println("Girar derecha (solo servos)");
-  const int STEERING_DELTA = 30; // ajusta según necesidad
+  const int STEERING_DELTA = 45; // ajusta según necesidad
   int angle = constrain(90 + STEERING_DELTA, 0, 180);
   setSteeringAngle(angle);
 }

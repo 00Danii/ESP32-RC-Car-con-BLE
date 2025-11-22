@@ -23,7 +23,7 @@ void MyCallbacks::onWrite(BLECharacteristic *pCharacteristic)
     return;
 
   uint8_t speed = 200;           // valor PWM 0-255 por defecto
-  const int STEERING_DELTA = 30; // ajuste para FR/FL/BR/BL
+  const int STEERING_DELTA = 45; // ajuste para FR/FL/BR/BL
 
   // Comandos compuestos:
   // "FR" (forward + right), "FL" (forward + left)
