@@ -55,8 +55,8 @@ void setup()
 
   // Valores iniciales
   stopMotors();
-  setServoAngle(SERVO_LEFT_PIN, PWM_CH_SERVO_L, 90);  // centro
-  setServoAngle(SERVO_RIGHT_PIN, PWM_CH_SERVO_R, 80); // centro
+  setServoAngle(SERVO_LEFT_PIN, PWM_CH_SERVO_L, 80);  // centro
+  setServoAngle(SERVO_RIGHT_PIN, PWM_CH_SERVO_R, 50); // centro
 
   // ===== BLE =====
   BLEDevice::init("ESP32-RC-CAR");
